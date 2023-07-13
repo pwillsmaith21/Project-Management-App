@@ -1,7 +1,12 @@
 .App {
   text-align: center;
 }
-
+.login {
+  text-align: center
+}
+.register{
+  text-align: center
+}
 
 .App-header {
   background-color: #282c34;

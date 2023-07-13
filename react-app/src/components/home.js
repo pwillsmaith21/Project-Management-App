@@ -14,7 +14,7 @@ import Form from 'react-bootstrap/Form';
         setProjects(projects);
     }
     async function fetchProjects() {
-/*         var ProjectsUrl = `${baseUrl}/Projects`;
+/*       var ProjectsUrl = `${baseUrl}/Projects/id`;
         return await fetch(ProjectsUrl)
       .then(res => res.json()) */
       var projects = [
@@ -118,11 +118,47 @@ function ManageProject(props){
     return (
         <div className='ManageProject'>
             <div>
-            <EditForm project = {props.project}/>
+            <Task id = {props.project.id}/>
+            <EditForm project = {props.project}/>       
             <Button onClick = {DeleteProject}>Delete</Button>
             </div>
         </div>
     )
+}
+function Task(props){
+    const baseUrl = "localhost:4000/api"
+    const[tasks, setTasks] = useState([]);
+     async function getTasks(){
+        var tasks = await fetchProjectTask()
+        setTasks(tasks);
+    }
+    async function fetchProjectTask() {
+/*         var ProjectsUrl = `${baseUrl}/Projects/id/Task`;
+        return await fetch(ProjectsUrl)
+      .then(res => res.json()) */
+      var tasks = [
+        {
+            'id' : 1,
+            'taskname': "add css to application"
+
+        },
+        {
+            'id' : 2,
+            'taskname': "create api to acess star war data base",
+        }
+    ]
+    return tasks
+  }
+    useEffect(() => {getTasks()}, []);
+    
+    const TasksHtml = tasks.map((task) =>
+        <h4>task: {task.taskname}</h4>);
+    return(
+        <div>
+            {TasksHtml}
+        </div>
+    )
+
 }
 
 export default Home;
