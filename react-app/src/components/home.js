@@ -9,42 +9,32 @@ import Accordion from 'react-bootstrap/Accordion';
     const baseUrl = "http://localhost:4000/api"
     const[projects, setProjects] = useState([]);
     const[user, setUser] = useState([])
-    const{userId} = useParams();
+    const{id} = useParams();
+
      async function getProjects(){
         var projects = await fetchProjects()
         setProjects(projects);
     }
-    async function getUser(){
+    /* async function getUser(){
         var user = await fetchUser()
         setUser(user);
-    }
+    } */
     
 
     async function fetchProjects() {
-        var ProjectsUrl = `${baseUrl}/projects/64b14d7bdbc262b4699e21df`;
+        var ProjectsUrl = `${baseUrl}/projects/${id}`;
         return await fetch(ProjectsUrl)
         .then(res => res.json())
 
   }
   
 async function fetchUser() {
-/*       var ProjectsUrl = `${baseUrl}/User/id`;
+    var ProjectsUrl = `${baseUrl}/uses/${id}`;
     return await fetch(ProjectsUrl)
-  .then(res => res.json()) */
-  var user = 
-        {
-            'id' : 1,
-            'email': "pwillsmaith@gmail.com",
-            'password' : "guest21",
-            'name': "Willsmaith pochette",
-            'role': "Non Manager",
-            'jobTitle': "Software Engineer" 
-
-        }
-    return user
+    .then(res => res.json()) 
     }
     useEffect(() => {getProjects()}, []);
-    useEffect(() => {getUser()},[])
+   // useEffect(() => {getUser()},[])
     
     const ProjectsHtml = projects.map((project) =>
     <div>
@@ -74,11 +64,12 @@ async function fetchUser() {
 
     return(
         <div className='Home'>
-            <section clasName= "user">
+            {/*<section clasName= "user">
                 <h4>
                     {user.name}
                 </h4>
             </section>
+    */}
             <h3>Projects</h3>
             {ProjectsHtml}
         </div>

@@ -13,49 +13,29 @@ function Registration() {
     const headers = { 'Content-type': 'application/json; charset=UTF-8'}
     const navigate = useNavigate();
 
-    async function getUser(){
-        var user = await fetchUser()
+    async function createUser(userJson){
+        var user = await PostUser(userJson)
         setUser(user);
+        if(user?._id != undefined){
+        navigate(`/Home/${user._id}`,{replace:false})
+        }
     }
     
-    async function fetchUser() {
-        /*
-        var ProjectsUrl = `${baseUrl}/user/id`;
-        return await fetch(ProjectsUrl)
-          .then(res => res.json()) */
-          var user = 
-                {
-                    'id' : 1,
-                    'email': "pwillsmaith@gmail.com",
-                    'password' : "guest21",
-                    'name': "Willsmaith",
-                    'role': "Non Manager",
-                    'jobTitle': "Software Engineer" 
-        
-                }
-            return user
-            }
-    function SubmitForm(userJson){
-        PostUser(userJson);
-        console.log("Usercreated succesfully")
-        getUser();
-        navigate(`/Home/${user.id}`,{replace:true})
-
-
+    async function SubmitForm(userJson){
+      
+        createUser(userJson); 
     }
-    function PostUser(userJson){
-        var updateJson ={
-            method: 'PUT',
-            body: JSON.stringify(userJson),
-            headers:headers
-        }
-        /* fetch(createUserUrl,updateJson)
-        .then((response) => response.json())
-        .then((json) => console.log(json)); */
-        console.log(JSON.stringify(userJson))
-        console.log(`User created sucessfull`)
-    }
-
+    async function PostUser(userJson) {
+        var postUserUrl = `${baseUrl}/users`;
+        var postJson ={
+          method: 'POST',
+          body: JSON.stringify(userJson),
+          headers: { 'Content-type': 'application/json; charset=UTF-8'}
+      }
+      return await fetch(postUserUrl,postJson)
+      .then(res => res.json())
+  
+  }
   return(
         <div className="register">
             <Form className="mb-3" onSubmit={handleSubmit((data) => SubmitForm(data))}>
@@ -65,10 +45,11 @@ function Registration() {
                 <Form.Control defaultValue="Email" {...register("email")} />
                 <Form.Label For="password">Password:</Form.Label>
                 <Form.Control defaultValue="Password"{...register("password")}/>
-                <Form.Label For="jobtitle">Job Title:</Form.Label>
-                <Form.Control defaultValue="Job" {...register("jobtitle")} />
-                <Form.Label For="Access">Acess level:</Form.Label>
-                <Form.Control defaultValue="Acess"{...register("Access")}/>
+                <Form.Label For="manager">manager:</Form.Label>
+                <Form.Select {...register("manager")}>
+                    <option value="true">true</option>
+                    <option value="false">false</option>
+                </Form.Select>
                 <Form.Control type="submit" />
         </Form>
         </div>
