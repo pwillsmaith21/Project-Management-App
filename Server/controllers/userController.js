@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs') //encrypt hashed password in mongodb
 
 // Post Request - /api/users/login
 const loginUser = asyncHandler(async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     const {email, password} = req.body
 
     //check for user email
@@ -32,6 +33,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
 // Post Request (Register User) - /api/users
 const registerUser = asyncHandler (async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     const {name, email, password, manager} = req.body
     if(!name || !email || !password || !manager){
         res.status(400)
@@ -76,6 +78,7 @@ const registerUser = asyncHandler (async (req, res) => {
 
 // Get Request - /api/users/:email
 const  getUser = asyncHandler (async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     const email = req.params.email
     const user = await User.findOne({email})
 

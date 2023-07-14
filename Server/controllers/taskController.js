@@ -6,18 +6,21 @@ const User = require('../models/userModel')
 
 // Get Request - /api/tasks/project/:id
 const getTaskByProject = asyncHandler( async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     const tasks = await Task.find({project: req.params.id})
     res.status(200).json(tasks)
 })
 
 // Get Request - /api/tasks/user/:id
 const getTaskByUser = asyncHandler( async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     const tasks = await Task.find({assignee: req.params.id})
     res.status(200).json(tasks)
 })
 
 // Post Request - /api/tasks/project/:id
 const setTask = asyncHandler (async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
 
     if(!req.body.email){
         res.status(400)
@@ -39,6 +42,7 @@ const setTask = asyncHandler (async (req, res) => {
 
 // Put Request - /api/tasks/:id
 const editTask = asyncHandler (async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     const task = await Task.findById(req.params.id)
 
     if(!task){
@@ -54,6 +58,7 @@ const editTask = asyncHandler (async (req, res) => {
 
 // delete Request - /api/tasks/:id
 const deleteTask =  asyncHandler (async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     const task = await Task.findById(req.params.id)
 
     if(!project){

@@ -5,12 +5,14 @@ const Project = require('../models/projectsModel')
 
 // Get Request - /api/projects/:managerID
 const getProjects = asyncHandler( async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     const projects = await Project.find({manager: req.params.managerID})
     res.status(200).json(projects)
 })
 
 // Post Request - /api/projects/:managerID
 const setProject = asyncHandler (async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
 
     if(!req.body.name){
         res.status(400)
@@ -30,6 +32,7 @@ const setProject = asyncHandler (async (req, res) => {
 
 // Put Request - /api/projects/:id
 const editProject = asyncHandler (async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     const project = await Project.findById(req.params.id)
 
     if(!project){
@@ -45,6 +48,7 @@ const editProject = asyncHandler (async (req, res) => {
 
 // delete Request - /api/projects/:id
 const deleteProject =  asyncHandler (async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     const project = await Project.findById(req.params.id)
 
     if(!project){
