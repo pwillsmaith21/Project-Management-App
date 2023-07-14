@@ -1,11 +1,8 @@
 .App {
   text-align: center;
 }
-.login {
-  text-align: center
-}
-.register{
-  text-align: center
+.manageproject{
+  text-align: right;
 }
 
 .App-header {

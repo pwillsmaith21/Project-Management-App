@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import Managetask from './managetask.js'
+import { useParams } from 'react-router-dom';
 
 
- function Project(props){
+ function Project(){
     const baseUrl = "localhost:4000/api"
     const[project, setProject] = useState([]);
+    const{projectId} = useParams();
+
      async function getProject(){
         var project = await fetchProject()
         setProject(project);
     }
     async function fetchProject() {
-/*      var ProjectsUrl = `${baseUrl}/Project/${props.id}`;
+/*      var ProjectsUrl = `${baseUrl}/Project/${projectId}`;
         return await fetch(ProjectsUrl)
         .then(res => res.json()) */
       var project = 

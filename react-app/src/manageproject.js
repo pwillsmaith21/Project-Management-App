@@ -59,7 +59,6 @@ function ManageProject(props){
     return (
         <div className='ManageProject'>
             <div>
-            <Task id = {props.project.id}/>
             <EditForm project = {props.project}/>       
             <Button onClick = {DeleteProject}>Delete</Button>
             </div>
@@ -95,7 +94,7 @@ function Task(props){
     const TasksHtml = tasks.map((task) =>
         <h4>task: {task.taskname}</h4>);
     return(
-        <div>
+        <div className='manageproject'>
             {TasksHtml}
         </div>
     )
