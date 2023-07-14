@@ -1,0 +1,49 @@
+import React, {useState, useEffect} from 'react';
+import { useForm, SubmitHandler } from "react-hook-form"
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form';
+import { Link,useNavigate } from 'react-router-dom';
+
+function Login(props) {
+
+    const {register,handleSubmit} = useForm();
+    const baseUrl = "http://localhost:4000/api"
+    const[user, setUser] = useState([]);
+    //const[isLogin, loginUser] = useState(false)
+    const navigate = useNavigate();
+    async function getUser(userJson){
+        var user = await fetchUser(userJson)
+        setUser(user);
+        if(user?._id != undefined){
+          navigate(`/Home/${user._id}`,{replace:false})
+        }
+    } 
+    async function fetchUser(userJson) {
+      var userUrl = `${baseUrl}/users/login`;
+      var loginJson ={
+        method: 'POST',
+        body: JSON.stringify(userJson),
+        headers: { 'Content-type': 'application/json; charset=UTF-8'}
+    }
+    return await fetch(userUrl,loginJson)
+    .then(res => res.json())
+
+}
+     async function login(userInfo){
+        getUser(userInfo)
+      }
+
+    return(
+      <div className="mb-3">
+        <Form className="mb-3" onSubmit={handleSubmit((data) => login(data) )}>
+                <Form.Label For="email">Email:</Form.Label>
+                <Form.Control defaultValue="Email" {...register("email")} />
+                <Form.Label For="password">Password:</Form.Label>
+                <Form.Control defaultValue="Password"{...register("password")}/>
+                <Form.Control type="submit" />
+        </Form>
+        <Link to ={`/Register`} > <Button>Sign up</Button></Link>
+      </div>
+    )
+}
+export default Login

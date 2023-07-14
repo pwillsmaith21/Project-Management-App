@@ -1,7 +1,9 @@
 .App {
   text-align: center;
 }
-
+.manageproject{
+  text-align: right;
+}
 
 .App-header {
   background-color: #282c34;
