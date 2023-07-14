@@ -11,6 +11,13 @@ const getProjects = asyncHandler( async (req, res) => {
     res.status(200).json(projects)
 })
 
+// Get Request - /api/projects/get/:id
+const getProject = asyncHandler( async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    const projects = await Project.findOne({_id: req.params.id})
+    res.status(200).json(projects)
+})
+
 // Get Request - /api/projects/email/:email
 const getProjectsEmail = asyncHandler( async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -98,5 +105,6 @@ module.exports = {
     setProjectEmail,
     setProject,
     editProject,
+    getProject,
     deleteProject
 }
