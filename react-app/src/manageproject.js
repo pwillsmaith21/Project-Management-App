@@ -7,8 +7,8 @@ import Form from 'react-bootstrap/Form';
 
 
 function ManageProject(props){
-    const baseUrl = "localhost:4000/api"
-    const projectsUrl = `${baseUrl}/Projects/${props.project.id}`
+    const baseUrl = "http://localhost:4000/api"
+    const projectsUrl = `${baseUrl}/projects/${props.project._id}`
     const headers = { 'Content-type': 'application/json; charset=UTF-8'}
     function UpdateProject(projectJson){
         var updateJson ={
@@ -16,22 +16,20 @@ function ManageProject(props){
             body: JSON.stringify(projectJson),
             headers:headers
         }
-        /* fetch(projectsUrl,updateJson)
+        fetch(projectsUrl,updateJson)
         .then((response) => response.json())
-        .then((json) => console.log(json)); */
-        //alert("Project edit sucessfull")
+        .then((json) => console.log(json)); 
         console.log(JSON.stringify(projectJson))
         console.log(`Project edit sucessfull`)
     }
     function DeleteProject(){
         var deleteJson = {
-            method: 'DELETE',
-            headers: headers
+            method: 'DELETE'
         }
-        /* fetch(projectsUrl,deleteJson)
+        fetch(projectsUrl,deleteJson)
         .then((response) => response.json())
-        .then((json) => console.log(json)); */
-        alert(`project ${props.project.id}  Delete sucessfull`)
+        .then((json) => console.log(json)); 
+        alert(`project ${props.project._id}  Delete sucessfull`)
     }
     function EditForm(props){
         var project = props.project
@@ -40,8 +38,8 @@ function ManageProject(props){
         <Popup trigger={<Button>Edit</Button>} position="right center">
             <Form onSubmit={handleSubmit((data) => UpdateProject(data))}>
                 
-                <Form.Label For="projectname">Project Name:</Form.Label>
-                <Form.Control defaultValue={project.projectname} {...register("projectname")} />
+                <Form.Label For="name">Project Name:</Form.Label>
+                <Form.Control defaultValue={project.name} {...register("name")} />
                 <Form.Label For="teamSize">Team Size:</Form.Label>
                 <Form.Control defaultValue={project.teamSize}   {...register("teamSize")}/>
                 <Form.Label For="budget">Project Budget:</Form.Label>
@@ -50,8 +48,6 @@ function ManageProject(props){
                 <Form.Control defaultValue={project.workload}  {...register("workload")}/>
                 <Form.Label For="completionTime">Completion Time:</Form.Label>
                 <Form.Control defaultValue={project.completionTime}  {...register("completionTime")} />
-                <Form.Label For="contributors">contributors:</Form.Label>
-                <Form.Control defaultValue={project.contributors?.toString()} {...register("contributors")} />
                 <Form.Control type="submit" />
             </Form>
       </Popup>)

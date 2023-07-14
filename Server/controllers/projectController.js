@@ -6,7 +6,6 @@ const User = require('../models/userModel')
 
 // Get Request - /api/projects/:managerID
 const getProjects = asyncHandler( async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
     const projects = await Project.find({manager: req.params.managerID})
     res.status(200).json(projects)
 })
@@ -20,7 +19,6 @@ const getProject = asyncHandler( async (req, res) => {
 
 // Get Request - /api/projects/email/:email
 const getProjectsEmail = asyncHandler( async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
     const user = await User.findOne({email: req.params.email})
     const projects = await Project.find({manager: user._id})
     res.status(200).json(projects)
@@ -28,8 +26,6 @@ const getProjectsEmail = asyncHandler( async (req, res) => {
 
 // Post Request - /api/projects/:managerID
 const setProject = asyncHandler (async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-
     if(!req.body.name){
         res.status(400)
         throw new Error('Please add name field')
@@ -49,8 +45,6 @@ const setProject = asyncHandler (async (req, res) => {
 
 // Post Request - /api/projects/email/:email
 const setProjectEmail = asyncHandler (async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-
     if(!req.body.name){
         res.status(400)
         throw new Error('Please add name field')
@@ -70,7 +64,6 @@ const setProjectEmail = asyncHandler (async (req, res) => {
 
 // Put Request - /api/projects/:id
 const editProject = asyncHandler (async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
     const project = await Project.findById(req.params.id)
 
     if(!project){
@@ -86,7 +79,6 @@ const editProject = asyncHandler (async (req, res) => {
 
 // delete Request - /api/projects/:id
 const deleteProject =  asyncHandler (async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
     const project = await Project.findById(req.params.id)
 
     if(!project){
