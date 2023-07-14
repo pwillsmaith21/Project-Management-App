@@ -97,10 +97,30 @@ const  getUser = asyncHandler (async (req, res) => {
     }
 })
 
+// Get Request - /api/users/id/:id
+const  getUserbyID = asyncHandler (async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    const id = req.params.id
+    const user = await User.findOne({_id: req.params.id})
 
+    //check for password
+    if(user){
+        res.status(200).json({
+            _id: user.id,
+            name: user.name,
+            email: user.email,
+            manager: user.manager
+        })
+    }
+    else {
+        res.status(400)
+        throw new Error('Invalid Login')
+    }
+})
 
 module.exports = {
     loginUser,
     registerUser,
-    getUser
+    getUser,
+    getUserbyID
 }
