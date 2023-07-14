@@ -6,7 +6,7 @@ import Accordion from 'react-bootstrap/Accordion';
 
 
  function Home(){
-    const baseUrl = "localhost:4000/api"
+    const baseUrl = "http://localhost:4000/api"
     const[projects, setProjects] = useState([]);
     const[user, setUser] = useState([])
     const{userId} = useParams();
@@ -21,36 +21,10 @@ import Accordion from 'react-bootstrap/Accordion';
     
 
     async function fetchProjects() {
-/*       var ProjectsUrl = `${baseUrl}/Projects/id`;
+        var ProjectsUrl = `${baseUrl}/projects/64b14d7bdbc262b4699e21df`;
         return await fetch(ProjectsUrl)
-      .then(res => res.json()) */
-      var projects = [
-        {
-            'id' : 1,
-            'projectname': "Online Store App",
-            'teamSize' : 7,
-            'budget' : 8000,
-            'workload' : 'Light',
-            'completionTime' : '2Weeks',
-            'contributors': [
-                "Akul Shah", "Willsmaith pochette"
-            ]
-    
-        },
-        {
-            'id' : 2,
-            'projectname': "Star War app",
-            'teamSize' : 17,
-            'budget' : 80000,
-            'workload' : 'Heavy',
-            'completionTime' : '3 Weeks',
-            'contributors': [
-                "james paul", "William pochette"
-            ]
-    
-        }
-    ]
-    return projects
+        .then(res => res.json())
+
   }
   
 async function fetchUser() {
@@ -77,9 +51,9 @@ async function fetchUser() {
         <Accordion defaultActiveKey="1">
         <Accordion.Item eventKey="0">
         <Accordion.Header>
-        <Link to ={`/project/${project.id}`} > 
+        <Link to ={`/project/${project._id}`} > 
             <h4>
-                {project.projectname}
+                {project.name}
             </h4>
         </Link>
         </Accordion.Header>
@@ -89,8 +63,8 @@ async function fetchUser() {
             <p1> Budget : {project.budget}<br></br></p1>
             <p1> Workload : {project.workload} <br></br></p1>
             <p1> Completion Time : {project.completionTime}<br></br></p1>
-            <p1>Contributors : {project.contributors.toString()}<br></br></p1>
-            <Task id = {project.id}/>
+            {/*<p1>Contributors : {project.contributors.toString()}<br></br></p1>*/}
+            <Task _id = {project._id}/>
        </Accordion.Body>
        </Accordion.Item>
        </Accordion>
@@ -112,17 +86,17 @@ async function fetchUser() {
 
 }
 function Task(props){
-    const baseUrl = "localhost:4000/api"
+    const baseUrl = "http://localhost:4000/api"
     const[tasks, setTasks] = useState([]);
      async function getTasks(){
         var tasks = await fetchProjectTask()
         setTasks(tasks);
     }
     async function fetchProjectTask() {
-/*         var ProjectsUrl = `${baseUrl}/Projects/props.id/Tasks`;
+        var ProjectsUrl = `${baseUrl}/tasks/project/${props._id}`;
         return await fetch(ProjectsUrl)
-      .then(res => res.json()) */
-      var tasks = [
+       .then(res => res.json())
+      /* var tasks = [
         {
             'id' : 1,
             'taskname': "add css to application"
@@ -132,13 +106,14 @@ function Task(props){
             'id' : 2,
             'taskname': "create api to acess star war data base",
         }
-    ]
+    ] 
     return tasks
+    */
   }
     useEffect(() => {getTasks()}, []);
     
     const TasksHtml = tasks.map((task) =>
-        <p1>task: {task.taskname}<br></br></p1>);
+        <p1>task: {task.description}<br></br></p1>);
     return(
         <div>
             {TasksHtml}

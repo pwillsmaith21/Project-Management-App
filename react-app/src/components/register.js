@@ -6,7 +6,7 @@ import { Link,useNavigate } from 'react-router-dom';
 
 function Registration() {
     const {register,handleSubmit} = useForm();
-    const baseUrl = "localhost:4000/api"
+    const baseUrl = "http://localhost:4000/api"
     const createUserUrl = `${baseUrl}/users`
     const[user, setUser] = useState([])
 
