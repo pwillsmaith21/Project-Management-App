@@ -2,11 +2,20 @@
 const asyncHandler = require('express-async-handler')
 
 const Project = require('../models/projectsModel')
+const User = require('../models/userModel')
 
 // Get Request - /api/projects/:managerID
 const getProjects = asyncHandler( async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     const projects = await Project.find({manager: req.params.managerID})
+    res.status(200).json(projects)
+})
+
+// Get Request - /api/projects/email/:email
+const getProjectsEmail = asyncHandler( async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    const user = await User.findOne({email: req.params.email})
+    const projects = await Project.find({manager: user._id})
     res.status(200).json(projects)
 })
 
@@ -26,6 +35,28 @@ const setProject = asyncHandler (async (req, res) => {
         workload: req.body.workload,
         completionTime: req.body.completionTime,
         manager: req.params.managerID
+    })
+    res.status(201).json(project)
+})
+
+
+// Post Request - /api/projects/email/:email
+const setProjectEmail = asyncHandler (async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    if(!req.body.name){
+        res.status(400)
+        throw new Error('Please add name field')
+    }
+
+    const user = await User.findOne({email: req.params.email})
+    const project = await Project.create({
+        name: req.body.name,
+        teamSize: req.body.teamSize,
+        budget: req.body.budget,
+        workload: req.body.workload,
+        completionTime: req.body.completionTime,
+        manager: user._id
     })
     res.status(201).json(project)
 })
@@ -63,6 +94,8 @@ const deleteProject =  asyncHandler (async (req, res) => {
 
 module.exports = {
     getProjects,
+    getProjectsEmail,
+    setProjectEmail,
     setProject,
     editProject,
     deleteProject
