@@ -61,39 +61,5 @@ function ManageProject(props){
         </div>
     )
 }
-function Task(props){
-    const baseUrl = "localhost:4000/api"
-    const[tasks, setTasks] = useState([]);
-     async function getTasks(){
-        var tasks = await fetchProjectTask()
-        setTasks(tasks);
-    }
-    async function fetchProjectTask() {
-/*         var ProjectsUrl = `${baseUrl}/Projects/id/Task`;
-        return await fetch(ProjectsUrl)
-      .then(res => res.json()) */
-      var tasks = [
-        {
-            'id' : 1,
-            'taskname': "add css to application"
 
-        },
-        {
-            'id' : 2,
-            'taskname': "create api to acess star war data base",
-        }
-    ]
-    return tasks
-  }
-    useEffect(() => {getTasks()}, []);
-    
-    const TasksHtml = tasks.map((task) =>
-        <h4>task: {task.taskname}</h4>);
-    return(
-        <div className='manageproject'>
-            {TasksHtml}
-        </div>
-    )
-
-}
 export default ManageProject
