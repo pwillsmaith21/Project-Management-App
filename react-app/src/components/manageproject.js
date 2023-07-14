@@ -52,6 +52,7 @@ function ManageProject(props){
             </Form>
       </Popup>)
     }
+    
     return (
         <div className='ManageProject'>
             <div>

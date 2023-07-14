@@ -7,8 +7,8 @@ import Form from 'react-bootstrap/Form';
 
 
 function ManageTask(props){
-    const baseUrl = "localhost:4000/api"
-    const taskUrl = `${baseUrl}/task/${props.task.id}`
+    const baseUrl = "http://localhost:4000/api"
+    const taskUrl = `${baseUrl}/tasks/${props.task._id}`
     const headers = { 'Content-type': 'application/json; charset=UTF-8'}
     function UpdateTask(taskJson){
         var updateJson ={
@@ -16,21 +16,20 @@ function ManageTask(props){
             body: JSON.stringify(taskJson),
             headers:headers
         }
-        /* fetch(taskUrl,updateJson)
+        fetch(taskUrl,updateJson)
         .then((response) => response.json())
-        .then((json) => console.log(json)); */
+        .then((json) => console.log(json)); 
         console.log(JSON.stringify(taskJson))
-        console.log(`Project edit sucessfull`)
+        console.log(`task edit sucessfull`)
     }
     function DeleteTask(){
         var deleteJson = {
-            method: 'DELETE',
-            headers: headers
+            method: 'DELETE'
         }
-        /* fetch(taskUrl,deleteJson)
+        fetch(taskUrl,deleteJson)
         .then((response) => response.json())
-        .then((json) => console.log(json)); */
-        alert(`task ${props.task.id}  Delete sucessfull`)
+        .then((json) => console.log(json)); 
+        alert(`task ${props._id}  Delete sucessfull`)
     }
     function EditForm(props){
         var task = props.task
@@ -38,17 +37,14 @@ function ManageTask(props){
         return (
         <Popup trigger={<Button>Edit</Button>} position="right center">
             <Form onSubmit={handleSubmit((data) => UpdateTask(data))}>
-                
                 <Form.Label For="task">Task:</Form.Label>
-                <Form.Control defaultValue={task.taskname} {...register("taskname")} />
-                <Form.Label For="description">Description:</Form.Label>
                 <Form.Control defaultValue={task.description}   {...register("description")}/>
-                <Form.Label For="personassign">Assignment:</Form.Label>
-                <Form.Control defaultValue={task.personassign}   {...register("personassign")}/>
-                <Form.Label For="duedate">Due Date:</Form.Label>
-                <Form.Control defaultValue={task.duedate}  {...register("duedate")}/>
-                <Form.Label For="estimateduration">Completion Time:</Form.Label>
-                <Form.Control defaultValue={task.estimateduration}  {...register("estimateduration")} />
+                <Form.Label For="assignee">Assignment:</Form.Label>
+                <Form.Control defaultValue={task.assignee}   {...register("assignee")}/>
+                <Form.Label For="due">Due Date:</Form.Label>
+                <Form.Control defaultValue={task.due}  {...register("due")}/>
+                <Form.Label For="duration">duration:</Form.Label>
+                <Form.Control defaultValue={task.duration}  {...register("duration")} />
                 <Form.Control type="submit" />
             </Form>
       </Popup>)

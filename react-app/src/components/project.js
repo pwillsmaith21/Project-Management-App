@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import Managetask from './managetask.js'
 import { useParams } from 'react-router-dom';
+import Accordion from 'react-bootstrap/Accordion';
+import Popup from 'reactjs-popup';
+import { useForm, SubmitHandler } from "react-hook-form"
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form';
+
 
 
  function Project(){
@@ -29,7 +35,8 @@ import { useParams } from 'react-router-dom';
         <h3> Workload : {project.workload} </h3>
         <h3> Completion Time : {project.completionTime}</h3>
        {/*<h3>Contributors : {project.contributors?.toString()}</h3>*/}
-        {project._id == undefined?"":<Tasks _id = {project._id}/>}
+        {project?._id == undefined?"":<Tasks _id = {project._id}/>}
+        {project?._id == undefined?"":<AddTask _id = {project._id}/>}
         </div>
     )
 
@@ -45,41 +52,27 @@ function Tasks(props){
     }
     async function fetchProjectTask() {
         
-        return await fetch(projectTasksUrl)
-        .then(res => res.json()) 
-        /*
-        var tasks = [
-        {
-            'id' : 1,
-            'taskname': "add css to application",
-            'description': "to increase the aesthetic",
-            'personassign': "Willsmaith Pochette",
-            'duedate': "7/13/2023",
-            'estimateduration': "2 weeks"
-
-        },
-        {
-            'id' : 2,
-            'taskname': "create api to acess star war data base",
-            'description': "to obtain star war data for website",
-            'personassign': "Akul Shah",
-            'duedate': "7/13/2023",
-            'estimateduration': "2 weeks"
-        }
-    ]
-    return tasks
-    */
+         return await fetch(projectTasksUrl)
+        .then(res => res.json())     
   }
     useEffect(() => {getTasks()}, []);
     
     const TasksHtml = tasks.map((task) =>
         <div>
+            <Accordion defaultActiveKey="1">
+            <Accordion.Item eventKey="0">
+            <Accordion.Header>
             {/*<h3>task: {task.taskname}</h3>*/}
-            <h3>desciption: {task.description}</h3>
-            <h3> Assignment: {task.assignee}</h3>
-            <h3> Due Date: {task.due} </h3>
-            <h3> Duration (estimated): {task.duration}</h3>
-            <h3> Completed: {String(task.done)}</h3>
+            <h4>{task.description}</h4>
+            </Accordion.Header>
+            <Accordion.Body>
+                <p1> Assignment: {task.assignee}</p1>
+                <p1> Due Date: {task.due} </p1>
+                <p1> Duration (estimated): {task.duration}</p1>
+                <p1> Completed: {String(task.done)}</p1>
+            </Accordion.Body>
+            </Accordion.Item>
+            </Accordion>
             <Managetask task = {task}/>
         </div>)
     return(
@@ -88,6 +81,38 @@ function Tasks(props){
         </div>
     )
 
+}
+function AddTask(props){
+    const {register,handleSubmit} = useForm();
+    const baseUrl = "http://localhost:4000/api"
+    const projectTaskUrl = `${baseUrl}/tasks/project/${props._id}`
+    const headers = { 'Content-type': 'application/json; charset=UTF-8'}
+    function createTask(taskJson){
+        var createJson ={
+            method: 'POST',
+            body: JSON.stringify(taskJson),
+            headers:headers
+        }
+        fetch(projectTaskUrl,createJson)
+        .then((response) => response.json())
+        .then((json) => console.log(json)); 
+        console.log(JSON.stringify(taskJson))
+        console.log(`Task created sucessfull`)
+    }
+    return (
+    <Popup trigger={<Button>Create Task</Button>} position="right center">
+        <Form onSubmit={handleSubmit((data) => createTask(data))}>
+                <Form.Label For="task">Task:</Form.Label>
+                <Form.Control  {...register("description")}/>
+                <Form.Label For="email">email of assignee:</Form.Label>
+                <Form.Control {...register("email")}/>
+                <Form.Label For="due">Due Date:</Form.Label>
+                <Form.Control  {...register("due")}/>
+                <Form.Label For="duration">duration:</Form.Label>
+                <Form.Control   {...register("duration")} />
+                <Form.Control type="submit" />
+        </Form>
+  </Popup>)
 }
 
 export default Project;

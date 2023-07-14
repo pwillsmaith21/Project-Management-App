@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
-import ManageProject from '../manageproject';
+import ManageProject from './manageproject';
 import { useParams } from 'react-router-dom';
 import Accordion from 'react-bootstrap/Accordion';
+import AddProject from './addproject';
 
 
  function Home(){
     const baseUrl = "http://localhost:4000/api"
     const[projects, setProjects] = useState([]);
     const[user, setUser] = useState([])
-    const{id} = useParams();
+    const{_id} = useParams();
 
      async function getProjects(){
         var projects = await fetchProjects()
@@ -22,14 +23,15 @@ import Accordion from 'react-bootstrap/Accordion';
     
 
     async function fetchProjects() {
-        var ProjectsUrl = `${baseUrl}/projects/${id}`;
+
+        var ProjectsUrl = `${baseUrl}/projects/${_id}`;
         return await fetch(ProjectsUrl)
         .then(res => res.json())
 
   }
   
 async function fetchUser() {
-    var ProjectsUrl = `${baseUrl}/uses/${id}`;
+    var ProjectsUrl = `${baseUrl}/uses/${_id}`;
     return await fetch(ProjectsUrl)
     .then(res => res.json()) 
     }
@@ -72,6 +74,7 @@ async function fetchUser() {
     */}
             <h3>Projects</h3>
             {ProjectsHtml}
+            {/*<AddProject _id = {_id}/>*/}
         </div>
     )
 
