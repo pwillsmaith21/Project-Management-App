@@ -3,7 +3,10 @@ import {Link} from 'react-router-dom';
 import ManageProject from './manageproject';
 import { useParams } from 'react-router-dom';
 import Accordion from 'react-bootstrap/Accordion';
-import AddProject from './addproject';
+import Popup from 'reactjs-popup';
+import { useForm, SubmitHandler } from "react-hook-form"
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form';
 
 
  function Home(){
@@ -16,10 +19,10 @@ import AddProject from './addproject';
         var projects = await fetchProjects()
         setProjects(projects);
     }
-    /* async function getUser(){
+    async function getUser(){
         var user = await fetchUser()
         setUser(user);
-    } */
+    } 
     
 
     async function fetchProjects() {
@@ -31,12 +34,12 @@ import AddProject from './addproject';
   }
   
 async function fetchUser() {
-    var ProjectsUrl = `${baseUrl}/uses/${_id}`;
+    var ProjectsUrl = `${baseUrl}/uses/id/${_id}`;
     return await fetch(ProjectsUrl)
     .then(res => res.json()) 
     }
     useEffect(() => {getProjects()}, []);
-   // useEffect(() => {getUser()},[])
+    useEffect(() => {getUser()},[])
     
     const ProjectsHtml = projects.map((project) =>
     <div>
@@ -66,15 +69,14 @@ async function fetchUser() {
 
     return(
         <div className='Home'>
-            {/*<section clasName= "user">
+            <section clasName= "user">
                 <h4>
                     {user.name}
                 </h4>
             </section>
-    */}
             <h3>Projects</h3>
             {ProjectsHtml}
-            {/*<AddProject _id = {_id}/>*/}
+            <AddProject _id = {_id}/>
         </div>
     )
 
@@ -114,6 +116,40 @@ function Task(props){
         </div>
     )
 
+}
+function AddProject(props){
+    const {register,handleSubmit} = useForm();
+    const baseUrl = "http://localhost:4000/api"
+    const projectUrl = `${baseUrl}/projects/${props._id}`
+    const headers = { 'Content-type': 'application/json; charset=UTF-8'}
+    function createProject(projectJson){
+        var createJson ={
+            method: 'POST',
+            body: JSON.stringify(projectJson),
+            headers:headers
+        }
+        fetch(projectUrl,createJson)
+        .then((response) => response.json())
+        .then((json) => console.log(json)); 
+        console.log(JSON.stringify(projectJson))
+        console.log(`Task created sucessfull`)
+    }
+    return (
+    <Popup trigger={<Button>Create Project</Button>} position="right center">
+        <Form onSubmit={handleSubmit((data) => createProject(data))}>
+                <Form.Label For="name">Project Name:</Form.Label>
+                <Form.Control  {...register("name")} />
+                <Form.Label For="teamSize">Team Size:</Form.Label>
+                <Form.Control  {...register("teamSize")}/>
+                <Form.Label For="budget">Project Budget:</Form.Label>
+                <Form.Control    {...register("budget")}/>
+                <Form.Label For="workload">Workload:</Form.Label>
+                <Form.Control  {...register("workload")}/>
+                <Form.Label For="completionTime">Completion Time:</Form.Label>
+                <Form.Control   {...register("completionTime")} />
+                <Form.Control type="submit" />
+        </Form>
+  </Popup>)
 }
 
 export default Home;
