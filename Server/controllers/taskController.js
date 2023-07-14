@@ -11,10 +11,18 @@ const getTaskByProject = asyncHandler( async (req, res) => {
     res.status(200).json(tasks)
 })
 
-// Get Request - /api/tasks/user/:id
-const getTaskByUser = asyncHandler( async (req, res) => {
+// Get Request - /api/tasks/id/:id
+const getTaskByUserID = asyncHandler( async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     const tasks = await Task.find({assignee: req.params.id})
+    res.status(200).json(tasks)
+})
+
+// Get Request - /api/tasks/email/:email
+const getTaskByUserEmail = asyncHandler( async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    const user = await User.findOne({email:req.params.email})
+    const tasks = await Task.find({assignee: user._id})
     res.status(200).json(tasks)
 })
 
@@ -73,7 +81,8 @@ const deleteTask =  asyncHandler (async (req, res) => {
 
 module.exports = {
     getTaskByProject,
-    getTaskByUser,
+    getTaskByUserID,
+    getTaskByUserEmail,
     setTask,
     editTask,
     deleteTask

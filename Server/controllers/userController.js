@@ -35,7 +35,7 @@ const loginUser = asyncHandler(async (req, res) => {
 const registerUser = asyncHandler (async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     const {name, email, password, manager} = req.body
-    if(!name || !email || !password || !manager){
+    if(!name || !email || !password ){
         res.status(400)
         throw new Error('please add all fields')
     }
