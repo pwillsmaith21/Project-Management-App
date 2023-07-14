@@ -3,11 +3,33 @@ const asyncHandler = require('express-async-handler')
 
 const Project = require('../models/projectsModel')
 const User = require('../models/userModel')
+const Task = require('../models/tasksModel')
 
-// Get Request - /api/projects/:managerID
+// Get Request - /api/projects/:id
 const getProjects = asyncHandler( async (req, res) => {
-    const projects = await Project.find({manager: req.params.managerID})
-    res.status(200).json(projects)
+    const user = await User.findOne({_id: req.params.managerID})
+    if(!user){
+        res.status(400)
+        throw new Error('User not found')
+    }
+    else if(user.manager)
+    {
+        const projects = await Project.find({manager: req.params.managerID})
+        res.status(200).json(projects)
+    }
+    else {
+        var userID = user._id
+        const tasks = await Task.find({assignee:userID})
+
+        var proj = []
+
+        for(let i=0; i<tasks.length; i++)
+        {
+            let p = await Project.findOne({_id:tasks[i].project})
+            proj.push(p)
+        }
+        res.status(200).json(proj)
+    }
 })
 
 // Get Request - /api/projects/get/:id
