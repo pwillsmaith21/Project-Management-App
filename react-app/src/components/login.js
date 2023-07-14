@@ -1,34 +1,64 @@
 import React, {useState} from 'react';
+import { useForm, SubmitHandler } from "react-hook-form"
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form';
+import { Link,useNavigate } from 'react-router-dom';
 function Login(props) {
-    const [state , setState] = useState({
-        email : "",
-        password : ""
-    })
-    const handleChange = (e) => {
-        const {id , value} = e.target   
-        setState(prevState => ({
-            ...prevState,
-            [id] : value
-        }))
+
+    const {register,handleSubmit} = useForm();
+    const baseUrl = "localhost:4000/api"
+    const[user, setUser] = useState([]);
+    const[isLogin, loginUser] = useState(false)
+     /* async function getUser(){
+        var user = await fetchUser()
+        setuser(user);
+        loginUser(true);
+    } */
+    async function fetchUser(email) {
+/*      var ProjectsUrl = `${baseUrl}/User/${props.id}`;
+        return await fetch(ProjectsUrl)
+        .then(res => res.json()) */
+      var project = 
+        {
+            'id' : 1,
+            'email': "pwillsmaith@gmail.com",
+            'password' : "guest21",
+        }
+    return project
+  }
+  function validateUser(userInfo,user){
+        if(userInfo.email != user.email){
+            return false;
+        }
+        else if (userInfo.password != user.password){
+            return false;
+        }
+        else{
+            return true;
+        }
+  }
+       
+    function login(userInfo){
+       var user = fetchUser(userInfo.email)
+        console.log(userInfo)
+        if(validateUser(userInfo,user)){
+            setUser(user);
+            loginUser(true);
+            console.log("UserLogin succesfully")
+            const navigate = useNavigate();
+            navigate(`/Home/${user.id}`,{replace:true})
+        }
     }
     return(
       <div className="login">
-      Login Form
-      <input type="email" 
-                       className="form-control" 
-                       id="email" 
-                       aria-describedby="emailHelp" 
-                       placeholder="Enter email" 
-                       value={state.email}
-                       onChange={handleChange}
-                />
-      <input type="password" 
-                        className="form-control" 
-                        id="password" 
-                        placeholder="Password"
-                        value={state.password}
-                        onChange={handleChange} 
-                    />
+        <Form onSubmit={handleSubmit((data) => login(data))}>
+                <Form.Label For="email">Email:</Form.Label>
+                <Form.Control defaultValue="Email" {...register("email")} />
+                <Form.Label For="password">Password:</Form.Label>
+                <Form.Control defaultValue="Password"{...register("password")}/>
+                <Form.Control type="submit" />
+        </Form>
+        <Link to ={`/Register`} > <Button>Sign up</Button></Link>
       </div>
     )
 }
