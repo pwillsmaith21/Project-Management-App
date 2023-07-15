@@ -3,20 +3,23 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
-function NavigationBar() {
+function ColorSchemesExample() {
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
-        <Navbar.Brand href={`/home/${1}`}>Project Management</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+      <Navbar bg="primary" sticky="top" data-bs-theme="dark">
+        <Container>
+          <Navbar.Brand>Project Management</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href={`/home/${1}`}>Home</Nav.Link>
+            <Nav.Link href="/home">Home</Nav.Link>
+            <NavDropdown title="Project" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Project1</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Project1
+              </NavDropdown.Item>
+            </NavDropdown>
           </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+        </Container>
+      </Navbar>
   );
 }
 
-export default NavigationBar
+export default ColorSchemesExample;
