@@ -57,7 +57,6 @@ const setTask = asyncHandler (async (req, res) => {
 
 // Put Request - /api/tasks/:id
 const editTask = asyncHandler (async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
     const task = await Task.findById(req.params.id)
 
     if(!task){
@@ -73,10 +72,9 @@ const editTask = asyncHandler (async (req, res) => {
 
 // delete Request - /api/tasks/:id
 const deleteTask =  asyncHandler (async (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
     const task = await Task.findById(req.params.id)
 
-    if(!project){
+    if(!task){
         res.status(400)
         throw new Error('Project not found')
     }
