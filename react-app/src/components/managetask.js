@@ -29,7 +29,7 @@ function ManageTask(props){
         fetch(taskUrl,deleteJson)
         .then((response) => response.json())
         .then((json) => console.log(json)); 
-        alert(`task ${props._id}  Delete sucessfull`)
+        alert(`task ${props.task._id}  Delete sucessfull`)
     }
     function EditForm(props){
         var task = props.task

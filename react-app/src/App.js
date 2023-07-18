@@ -1,10 +1,10 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import React from 'react';
 import Home from './components/home';
 import Project from './components/project';
 import Login from './components/login';
 import Registration from './components/register';
-import NavigationBar from './components/navbar';
 import { Route,Routes } from 'react-router-dom';
 
 

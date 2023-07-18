@@ -3,12 +3,18 @@ import { useForm, SubmitHandler, get } from "react-hook-form"
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
 import { Link,useNavigate } from 'react-router-dom';
+import {createStore} from 'state-pool';
+const store = createStore();
+store.setState("isLogin", false);
+store.setState("user_id", undefined);
 
 function Registration() {
     const {register,handleSubmit} = useForm();
     const baseUrl = "http://localhost:4000/api"
     const createUserUrl = `${baseUrl}/users`
     const[user, setUser] = useState([])
+    const [isLogin, setIsLogin] = store.useState("isLogin");
+    const [user_id, setUser_id] = store.useState("user_id");
 
     const headers = { 'Content-type': 'application/json; charset=UTF-8'}
     const navigate = useNavigate();
@@ -17,7 +23,9 @@ function Registration() {
         var user = await PostUser(userJson)
         setUser(user);
         if(user?._id != undefined){
-        navigate(`/Home/${user._id}`,{replace:false})
+            setUser_id(user_id);
+            setIsLogin(true);
+            navigate(`/Home/${user._id}`,{replace:false})
         }
     }
     
